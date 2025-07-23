@@ -1,0 +1,374 @@
+/* Base layout settings */
+body {
+  font-family: 'Nunito', sans-serif;
+  color: #333;
+  min-height: 100vh;
+  padding: 2rem;
+  transition: background 0.5s ease;
+}
+
+/* Default background style only applies when no class is added */
+body:not(.bg-stars):not(.bg-mystical):not(.bg-forest):not(.bg-gradient) {
+  background: linear-gradient(to bottom right, #e1f4ff, #fff0f6);
+}
+
+/* Main container */
+.wrapper {
+  max-width: 1200px;
+  margin: 4rem auto;
+  background: white;
+  padding: 4rem;
+  border-radius: 16px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Headings */
+h1 {
+  font-size: 2.8rem;
+  color: #2a75f3;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+  color: #555;
+  margin: 2rem 0 1rem;
+}
+
+h4 {
+  font-size: 1.4rem;
+  color: #ffffff;
+  margin: 1rem 0;
+}
+
+/* Sections and spacing */
+section {
+  margin-bottom: 2rem;
+}
+
+img {
+  max-width: 100%;
+  border-radius: 12px;
+  margin: 1rem auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Rarity list styling */
+.rarity-scores ul,
+.tips ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem auto;
+  max-width: 600px;
+  text-align: left;
+}
+
+.rarity-scores li,
+.tips li {
+  background: linear-gradient(to top right, #cbe8ff, #fdf7ff);
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+}
+
+/* Table area */
+.blook-table-wrapper {
+  background: #f9fbff;
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+th {
+  background: #edf6ff;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 2rem;
+  background: #f0f4fc;
+  font-size: 0.9rem;
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    padding: 2rem;
+    margin: 2rem auto;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  th, td {
+    padding: 1rem;
+    font-size: 0.95rem;
+  }
+}
+
+.pull-calculator {
+  background: #fff6fc;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  margin: 2rem auto;
+  max-width: 500px;
+  text-align: center;
+}
+
+.pull-calculator label {
+  display: block;
+  margin: 1rem auto;
+  font-weight: bold;
+}
+
+.pull-calculator input {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 100px;
+}
+
+
+.simulator {
+  background: #f5fff7;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  margin: 2rem auto;
+  max-width: 600px;
+  text-align: center;
+}
+
+.simulator label {
+  display: block;
+  margin: 1rem 0 0.5rem;
+  font-weight: bold;
+}
+
+.simulator input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 100px;
+}
+
+.simulator button {
+  margin-top: 1rem;
+  padding: 0.6rem 1rem;
+  background: #2a75f3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#simResults {
+  margin-top: 1rem;
+  font-family: monospace;
+  white-space: pre-wrap;
+  text-align: left;
+}
+
+
+.blook-spinner {
+  text-align: center;
+  padding: 2rem;
+  background: #f0f8ff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.spinner-container {
+  margin: 2rem auto;
+  width: 150px;
+  height: 150px;
+  position: relative;
+  border-radius: 50%;
+  border: 8px solid #ccc;
+  overflow: hidden;
+}
+
+#spinner {
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/blooket-coin.png');
+  background-size: cover;
+  border-radius: 50%;
+  transform: rotate(0deg);
+  transition: transform 2s ease-out;
+}
+
+#coinRainContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.coin {
+  position: absolute;
+  top: -50px;
+  width: 32px;
+  height: 32px;
+  background-image: url("/images/blooket-coin.png"); 
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: dropCoin 10s ease-out forwards;
+}
+
+@keyframes dropCoin {
+  to {
+    transform: translateY(500vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.blook-leaderboard {
+  background: #fff0f6;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.05);
+  max-width: 600px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.blook-leaderboard table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.blook-leaderboard th, .blook-leaderboard td {
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.blook-leaderboard th {
+  background: #ffcce0;
+  font-weight: bold;
+  color: #333;
+}
+
+.blook-leaderboard td {
+  background: #fff;
+  color: #444;
+}
+
+.add-entry {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.add-entry input {
+  padding: 0.5rem;
+  margin: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.add-entry button {
+  padding: 0.6rem 1.2rem;
+  background-color: #2a75f3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ✅ Default background as a class */
+.bg-default {
+  background: linear-gradient(to bottom right, #e1f4ff, #fff0f6);
+}
+
+/* 🌠 Cosmic Stars */
+.bg-stars {
+  background: url("images/stars-bg.png") no-repeat center center fixed;
+  background-size: cover;
+}
+
+.bg-mystical {
+  background: radial-gradient(circle at 40% 40%, #654ea3, #2c0434 80%);
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #16032a;
+  position: relative;
+  z-index: 1;
+}
+
+.bg-mystical::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glyph-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.glyph {
+  position: absolute;
+  font-size: 3rem;
+  color: rgba(255, 255, 255, 0.1);
+  animation: glyphPulse 8s infinite;
+  opacity: 0;
+}
+
+/* Animate fade + float */
+@keyframes glyphPulse {
+  0% { opacity: 0; transform: scale(0.5) translateY(0); }
+  25% { opacity: 0.8; transform: scale(1.2) translateY(-20px); }
+  50% { opacity: 0.6; transform: scale(1) translateY(-10px); }
+  75% { opacity: 0.4; transform: scale(0.8) translateY(-30px); }
+  100% { opacity: 0; transform: scale(0.6) translateY(-40px); }
+}
+
+
+/* 🌿 Pixel Jungle */
+.bg-forest {
+  background: url("images/jungle-bg.png") no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* 🎨 Color Gradient */
+.bg-gradient {
+  background: linear-gradient(to right, #ff9a9e, #fad0c4, #fad0c4);
+}
