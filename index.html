@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blook Score Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const chanceInput = document.getElementById("chance");
+    const packsInput = document.getElementById("packs");
+    const resultDisplay = document.getElementById("pullResult");
+
+    function updateProbability() {
+      const chancePercent = parseFloat(chanceInput.value) || 0;
+      const packs = parseInt(packsInput.value) || 0;
+
+      const singleChance = chancePercent / 100;
+      const failChance = Math.pow(1 - singleChance, packs);
+      const successChance = (1 - failChance) * 100;
+
+      resultDisplay.textContent = `${successChance.toFixed(2)}%`;
+    }
+
+    chanceInput.addEventListener("input", updateProbability);
+    packsInput.addEventListener("input", updateProbability);
+    updateProbability(); // run once on load
+  });
+</script>
+
+<script>
+  function updateCountdown() {
+    const countdown = document.getElementById("countdown");
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setHours(24, 0, 0, 0); // midnight
+
+    const diffMs = tomorrow - now;
+    const hours = Math.floor(diffMs / (1000 * 60 * 60));
+    const minutes = Math.floor((diffMs / (1000 * 60)) % 60);
+    const seconds = Math.floor((diffMs / 1000) % 60);
+
+    countdown.textContent = `${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+</script>
+
+<script>
+  function simulatePulls() {
+    const chanceInput = document.getElementById("blookChance");
+    const pullsInput = document.getElementById("numPulls");
+    const output = document.getElementById("simResults");
+
+    const chance = parseFloat(chanceInput.value) / 100;
+    const pulls = parseInt(pullsInput.value);
+
+    let resultText = "";
+    let wins = 0;
+
+    for (let i = 1; i <= pulls; i++) {
+      const roll = Math.random();
+      if (roll < chance) {
+        wins++;
+        resultText += `🎉 Pack ${i}: SUCCESS!\n`;
+      } else {
+        resultText += `❌ Pack ${i}: Missed\n`;
+      }
+    }
+
+    const successRate = ((wins / pulls) * 100).toFixed(2);
+    resultText += `\nTotal Wins: ${wins}/${pulls}\nSuccess Rate: ${successRate}%`;
+
+    output.textContent = resultText;
+  }
+</script>
+
+<script>
+  function startSpin() {
+    const spinner = document.getElementById("spinner");
+    const message = document.getElementById("spinMessage");
+
+    // Simulate spin animation
+    const rotation = 360 * (3 + Math.random()); // Random full spins
+    spinner.style.transform = `rotate(${rotation}deg)`;
+
+  
+    setTimeout(() => {
+      const win = Math.random() < 0.3;
+      message.textContent = win
+        ? "🎉 You pulled the rare Blook!"
+        : "😢 No Blook this time. Try again!";
+    }, 2000);
+  }
+</script>
+
+<script>
+  const konamiCode = [
+    "arrowup", "arrowup",
+    "arrowdown", "arrowdown",
+    "arrowleft", "arrowright",
+    "arrowleft", "arrowright",
+    "b", "a"
+  ];
+
+  let konamiIndex = 0;
+
+  document.addEventListener("keydown", (e) => {
+    const key = e.key.toLowerCase();
+    if (key === konamiCode[konamiIndex]) {
+      konamiIndex++;
+      if (konamiIndex === konamiCode.length) {
+        triggerCoinRain();
+        konamiIndex = 0;
+      }
+    } else {
+      konamiIndex = 0;
+    }
+  });
+
+  function triggerCoinRain() {
+    // Prevent duplicate container
+    if (document.getElementById("coinRainContainer")) return;
+
+    const container = document.createElement("div");
+    container.id = "coinRainContainer";
+    document.body.appendChild(container);
+
+    for (let i = 0; i < 30; i++) {
+      const coin = document.createElement("div");
+      coin.className = "coin";
+      coin.style.left = `${Math.random() * 100}%`;
+      coin.style.animationDelay = `${Math.random() * 2}s`;
+      container.appendChild(coin);
+    }
+
+    setTimeout(() => {
+      container.remove();
+      alert("🎉 Konami unlocked! You triggered the legendary coin storm!");
+    }, 4000);
+  }
+</script>
+
+<script>
+  function addToLeaderboard() {
+    const name = document.getElementById("playerName").value.trim();
+    const score = parseInt(document.getElementById("playerScore").value);
+
+    if (!name || isNaN(score)) return alert("Please enter a valid name and score.");
+
+    const table = document.getElementById("leaderboardTable").querySelector("tbody");
+    
+    // Add new row
+    const row = table.insertRow();
+    row.insertCell(0).textContent = "?"; // Temporary rank
+    row.insertCell(1).textContent = name;
+    row.insertCell(2).textContent = score;
+
+    // Sort rows by score
+    const rows = Array.from(table.rows);
+    rows.sort((a, b) => parseInt(b.cells[2].textContent) - parseInt(a.cells[2].textContent));
+
+    // Re-render rows with updated ranks
+    rows.forEach((r, i) => {
+      table.appendChild(r); // reorder
+      r.cells[0].textContent = i + 1; // update rank
+    });
+
+    // Optional: reset input fields
+    document.getElementById("playerName").value = "";
+    document.getElementById("playerScore").value = "";
+  }
+</script>
+
+ 
+
+<body class = "bg-default">
+  <section class="background-selector">
+    <h4>🎨 Choose Your Background</h4>
+    <select id="bgSelect" onchange="changeBackground()">
+      <option value="">Default</option>
+      <option value="stars">🌠 Cosmic Stars</option>
+      <option value="mystical">🔮 Mystical Realm</option>
+      <option value="forest">🌿 Pixel Jungle</option>
+      <option value="gradient">🎨 Color Gradient</option>
+    </select>
+  </section>
+
+  <div class="glyph-overlay">
+  <div class="glyph">⟁</div>
+  <div class="glyph">⚚</div>
+  <div class="glyph">✶</div>
+  <div class="glyph">⊕</div>
+  <div class="glyph">☉</div>
+</div>
+
+  <main class="wrapper">
+    
+    <header>
+      <h1>Blook Score Guide</h1>
+      <p>Blook Score reflects how rare your blooks are. The rarer, the higher your score!</p>
+    </header>
+
+    <section class="daily-timer">
+  <h2>⏳ Next Daily Coin Bonus</h2>
+  <p>Unlocks in: <span id="countdown">Loading...</span></p>
+</section>
+
+<section class="simulator">
+  <h2>🎮 Blook Pack Simulator</h2>
+  <label for="blookChance">Chance of Blook (%):</label>
+  <input type="number" id="blookChance" value="1" min="0" max="100" />
+
+  <label for="numPulls">Number of Pack Opens:</label>
+  <input type="number" id="numPulls" value="10" min="1" max="999" />
+
+  <button onclick="simulatePulls()">Start Simulation</button>
+
+  <h3>Results:</h3>
+  <div id="simResults"></div>
+</section>
+
+<section class="blook-spinner">
+  <h2>🎰 Spin for a Blook!</h2>
+  <button onclick="startSpin()">Open Pack</button>
+  <div class="spinner-container">
+    <div id="spinner"></div>
+  </div>
+  <p id="spinMessage"></p>
+</section>
+
+
+    <section class="highlight">
+      <img src="/images/king-blook.png" alt="King Blook" />
+      <p><strong>King Blook</strong> — Legendary with a 1% chance. Big impact, easy grab!</p>
+    </section>
+
+    <section class="highlight">
+      <img src="/images/blook-score.png" alt="Blook Score Icon" />
+      <p>Collect more blooks, climb the leaderboard—every rarity level counts!</p>
+    </section>
+
+    <section class="rarity-scores">
+      <h2>Blook Score by Rarity</h2>
+      <ul>
+        <li><strong>Common:</strong> 0</li>
+        <li><strong>Uncommon:</strong> 5</li>
+        <li><strong>Rare:</strong> 10</li>
+        <li><strong>Epic:</strong> 20</li>
+        <li><strong>Legendary:</strong> 35</li>
+        <li><strong>Chroma:</strong> 25–50</li>
+        <li><strong>Unique:</strong> 10</li>
+        <li><strong>Mystical:</strong> 50–100</li>
+      </ul>
+    </section>
+
+    <section class="blook-table-wrapper">
+      <h2>Legendary Blook Packs</h2>
+      <div class="blook-table-container">
+        <table>
+          <thead>
+            <tr><th>Blook</th><th>Pack</th><th>Chance</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>King</td><td>Medieval</td><td>1%</td></tr>
+            <tr><td>Butterfly</td><td>Bug</td><td>0.5%</td></tr>
+            <tr><td>Lion</td><td>Safari</td><td>0.5%</td></tr>
+            <tr><td>Baby Shark</td><td>Aquatic</td><td>0.5%</td></tr>
+            <tr><td>Astronaut</td><td>Space</td><td>0.45%</td></tr>
+            <tr><td>Sugar Glider</td><td>Outback</td><td>0.37%</td></tr>
+            <tr><td>Mega Bot</td><td>Bot</td><td>0.3%</td></tr>
+            <tr><td>Yeti</td><td>Ice Monster</td><td>0.3%</td></tr>
+            <tr><td>King of Hearts</td><td>Wonderland</td><td>0.3%</td></tr>
+            <tr><td>T-rex</td><td>Dino</td><td>0.3%</td></tr>
+            <tr><td>Captain Blackbeard</td><td>Pirate</td><td>0.3%</td></tr>
+            <tr><td>Megalodon</td><td>Aquatic</td><td>0.2%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="tips">
+      <h2>Tips to Boost Your Score</h2>
+      <ul>
+        <li>Start with the Medieval Pack—easy legendary entry!</li>
+        <li>Sell duplicates to stock coins faster</li>
+        <li>Save at least 2,000 coins before buying packs</li>
+        <li>Keep an eye out for seasonal blooks and events</li>
+      </ul>
+    </section>
+
+<section class="blook-leaderboard">
+  <h2>🏆 Top Blook Score Leaders</h2>
+  <table id="leaderboardTable">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Player</th>
+        <th>Blook Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>T2130922</td><td>1345</td></tr>
+      <tr><td>3</td><td>KAVI</td><td>1320</td></tr>
+      <tr><td>2</td><td>JaredTheGoat</td><td>1000</td></tr>
+      <tr><td>4</td><td>BoatMustSink</td><td>975</td></tr>
+      <tr><td>5</td><td>Karam</td><td>910</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="add-entry">
+  <h3>🔧 Add Your Score</h3>
+  <input type="text" id="playerName" placeholder="Enter name" />
+  <input type="number" id="playerScore" placeholder="Score" min="0" />
+  <button onclick="addToLeaderboard()">Submit</button>
+</section>
+
+
+    <section class="pull-calculator">
+  <h2>🎲 Blook Pull Probability Calculator</h2>
+  <form id="pullForm">
+    <label>
+      Chance per Pack (%): 
+      <input type="number" id="chance" min="0" max="100" value="1" />
+    </label>
+    <br /><br />
+    <label>
+      Number of Packs:
+      <input type="number" id="packs" min="1" value="1" />
+    </label>
+  </form>
+  <h3>Estimated Chance of Pulling the Blook: <span id="pullResult">1.00%</span></h3>
+</section>
+
+
+  </main>
+
+  <footer>
+    <p>Created by Agastyae Sahoo | <a href="https://github.com/T2-22">GitHub</a></p>
+    <p>Have a specific question for me? Contact me at: <a href= "https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcSMVkpQrgkgNdxGDkntSJFRhvMjHSSkcFltMFxXBJzHfwZMrFSdWfLwWJfqpPPwxBlggrbSC">sagastyae.dnd@gmail.com</a></p>
+  </footer>
+<script>
+  function changeBackground() {
+    const selected = document.getElementById("bgSelect").value;
+
+    // Remove any previously applied background classes
+    document.body.classList.remove(
+      "bg-stars",
+      "bg-mystical",
+      "bg-forest",
+      "bg-gradient",
+      "bg-default"
+    );
+
+    // Apply new background class if one is selected
+    if (selected) {
+      document.body.classList.add(`bg-${selected}`);
+    }
+  }
+
+  // Optional: initialize with default selection if needed
+  window.onload = function () {
+    const initialSelection = document.getElementById("bgSelect").value;
+    if (initialSelection) {
+      document.body.classList.add(`bg-${initialSelection}`);
+    }
+  };
+</script>
+
+</main>
+
+<script>
+  const glyphs = document.querySelectorAll('.glyph');
+  glyphs.forEach(g => {
+    g.style.top = `${Math.random() * 100}%`;
+    g.style.left = `${Math.random() * 100}%`;
+    g.style.animationDelay = `${Math.random() * 10}s`;
+  });
+</script>
+
+</body>
+<body class="bg-stars"></body>
+</html>
